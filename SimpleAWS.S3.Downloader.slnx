@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/.github/">
+    <File Path=".github/CODE_OF_CONDUCT.md" />
+    <File Path=".github/CONTRIBUTING.md" />
+    <File Path=".github/copilot-instructions.md" />
+    <File Path=".github/dependabot.yml" />
+    <File Path=".github/FUNDING.yml" />
+  </Folder>
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/MergeToMain.yml" />
+    <File Path=".github/workflows/PullRequest.yml" />
+    <File Path=".github/workflows/Release.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="CONTRIBUTING.md" />
+    <File Path="coverlet.runsettings" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj" />
+  <Project Path="src/SimpleAWS.S3.Downloader.Core.Tests/SimpleAWS.S3.Downloader.Core.Tests.csproj" />
+  <Project Path="src/SimpleAWS.S3.Downloader.Core/SimpleAWS.S3.Downloader.Core.csproj" />
+</Solution>
