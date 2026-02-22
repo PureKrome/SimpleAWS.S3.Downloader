@@ -2,8 +2,7 @@
 
 ## Project Context
 
-This is a project that allows users to download S3 buckets (all or a single one)
-via a nice easy to use ASCII/ANSI console app.
+This is a project that allows users to download S3 buckets (all or a single one) via a nice easy to use ASCII/ANSI console app.
 
 ## Code Style & Standards
 
@@ -93,6 +92,9 @@ via a nice easy to use ASCII/ANSI console app.
 - Provide async methods for I/O operations
 - Accept interfaces in constructors, return concrete types
 - Version APIs carefully to avoid breaking changes
+
+### User Input Handling
+- Use Spectre.Console input prompts that prefill the current value so Enter accepts it; clearing the field should persist null when editing config settings interactively.
 
 ## What NOT to Do
 
