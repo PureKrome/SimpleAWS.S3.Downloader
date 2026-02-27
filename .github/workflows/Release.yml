@@ -62,5 +62,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: SimpleAWS.S3.Downloader.${{ env.RELEASE_VERSION }}
           files: ./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}*
