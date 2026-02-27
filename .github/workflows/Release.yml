@@ -49,10 +49,18 @@ jobs:
       - name: Publish single-file executable (${{ matrix.runtime }})
         run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}
 
+      - name: Rename release executable (${{ matrix.runtime }})
+        run: |
+          if [ "${{ matrix.runtime }}" = "win-x64" ]; then
+            mv "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console.exe" "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}.exe"
+          else
+            mv "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console" "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}"
+          fi
+
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: SimpleAWS.S3.Downloader.${{ env.RELEASE_VERSION }}
-          files: ./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console*
+          files: ./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}*
