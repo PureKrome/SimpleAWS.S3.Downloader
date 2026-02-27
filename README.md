@@ -18,7 +18,7 @@
 
 - .NET: `.NET 10`
 - AWS SDK: `AWSSDK.S3`
-- Console UI: `Spectre.Console`
+- Console UI: `Terminal.Gui`
 - Logging: `Microsoft.Extensions.Logging.Console`
 - Testing: xUnit v3 (`xunit.v3.mtp-v2`) on Microsoft Testing Platform
 - Package management: Central Package Management (`Directory.Packages.props`)
