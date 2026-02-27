@@ -57,7 +57,7 @@ jobs:
         if: matrix.framework == env.HIGHEST_FRAMEWORK
 
       - name: Publish artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         if: matrix.framework == env.HIGHEST_FRAMEWORK
         with:
           name: NuGetPackage.${{ env.VERSION_PREFIX }}-${{ env.VERSION_SUFFIX }}
