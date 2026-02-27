@@ -35,4 +35,17 @@ public interface IS3DownloaderService
         string? prefix = null,
         string? region = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a summary of the objects in an S3 bucket (count and total size).
+    /// </summary>
+    /// <param name="bucketName">The name of the S3 bucket.</param>
+    /// <param name="prefix">Optional prefix to filter objects.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation with the bucket summary.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when bucketName is null.</exception>
+    Task<BucketSummary> GetBucketSummaryAsync(
+        string bucketName,
+        string? prefix = null,
+        CancellationToken cancellationToken = default);
 }

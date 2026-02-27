@@ -81,4 +81,60 @@ public sealed class AppSettingsStore
         Directory.CreateDirectory(Path.GetDirectoryName(_appSettingsPath) ?? AppContext.BaseDirectory);
         File.WriteAllText(_appSettingsPath, updatedJson);
     }
+
+    public AppSettings LoadAppSettings()
+    {
+        if (!File.Exists(_appSettingsPath))
+        {
+            return new AppSettings();
+        }
+
+        using var stream = File.OpenRead(_appSettingsPath);
+        using var document = JsonDocument.Parse(stream);
+
+        if (!document.RootElement.TryGetProperty("App", out var appElement))
+        {
+            return new AppSettings();
+        }
+
+        string? defaultDownloadPath = null;
+        if (appElement.TryGetProperty("DefaultDownloadPath", out var pathElement) && pathElement.ValueKind == JsonValueKind.String)
+        {
+            defaultDownloadPath = pathElement.GetString();
+        }
+
+        return new AppSettings
+        {
+            DefaultDownloadPath = defaultDownloadPath
+        };
+    }
+
+    public void SaveAppSettings(AppSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(settings);
+
+        var root = new Dictionary<string, object?>();
+
+        if (File.Exists(_appSettingsPath))
+        {
+            var existingJson = File.ReadAllText(_appSettingsPath);
+            if (!string.IsNullOrWhiteSpace(existingJson))
+            {
+                var existing = JsonSerializer.Deserialize<Dictionary<string, object?>>(existingJson);
+                if (existing is not null)
+                {
+                    root = existing;
+                }
+            }
+        }
+
+        root["App"] = new Dictionary<string, object?>
+        {
+            ["DefaultDownloadPath"] = settings.DefaultDownloadPath
+        };
+
+        var updatedJson = JsonSerializer.Serialize(root, SerializerOptions);
+        Directory.CreateDirectory(Path.GetDirectoryName(_appSettingsPath) ?? AppContext.BaseDirectory);
+        File.WriteAllText(_appSettingsPath, updatedJson);
+    }
 }

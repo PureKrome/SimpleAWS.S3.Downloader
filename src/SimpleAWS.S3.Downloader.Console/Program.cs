@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using SimpleAWS.S3.Downloader.Console;
 using SimpleAWS.S3.Downloader.Core.Services;
 using SimpleAWS.S3.Downloader.Console.Settings;
-using Spectre.Console;
 
 static string? TryGetCliOption(string[] args, string optionName)
 {
@@ -129,6 +128,6 @@ try
 }
 catch (Exception ex)
 {
-    AnsiConsole.WriteException(ex);
+    Console.Error.WriteLine(ex);
     return 1;
 }

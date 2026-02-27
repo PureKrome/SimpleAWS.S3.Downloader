@@ -13,18 +13,6 @@ The core downloading logic lives in the `SimpleAWS.S3.Downloader.Core` library a
 - Testing: xUnit v3 (`xunit.v3.mtp-v2`) on Microsoft Testing Platform
 - Package management: Central Package Management (`Directory.Packages.props`)
 
-## Repo layout
-
-- `src/SimpleAWS.S3.Downloader.Core`
-  - Library containing `IS3DownloaderService` and `S3DownloaderService`.
-  - Uses `IAmazonS3` via DI for testability (no direct AWS client creation inside methods).
-- `src/SimpleAWS.S3.Downloader.Console`
-  - Interactive console application.
-  - Builds a DI container and wires up the core service + AWS client.
-- `src/SimpleAWS.S3.Downloader.Core.Tests`
-  - Unit tests.
-  - Run via `dotnet run` (see below).
-
 ## How it generally works
 
 1. The console app prompts you for:
@@ -59,12 +47,28 @@ File: `src/SimpleAWS.S3.Downloader.Console/appsettings.json`
 ```jsonc
 {
   "AWS": {
-    "Profile": null
+    "Profile": null,
+    "Region": null
+  },
+  "App": {
+    "DefaultDownloadPath": null
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "System": "Warning"
+    }
   }
 }
 ```
 
-Set `AWS:Profile` to a named profile (for example `master`) to override the default SDK credential chain.
+Available settings:
+
+- `AWS:Profile`: Named AWS profile to use from the shared config/credentials files. When null, the SDK default chain is used.
+- `AWS:Region`: AWS region override. When null, the region is taken from the selected profile.
+- `App:DefaultDownloadPath`: Default local download folder shown in the UI. When null, the current working directory is used.
+- `Logging:LogLevel:Default`, `Logging:LogLevel:Microsoft`, `Logging:LogLevel:System`: Standard `Microsoft.Extensions.Logging` filter settings.
 
 ## Command line arguments
 
