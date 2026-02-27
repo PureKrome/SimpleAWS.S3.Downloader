@@ -60,10 +60,11 @@ AwsSettings ResolveAwsSettings(AppSettingsStore store)
     };
 }
 
+// TODO: Change to serilogging via configuration file
 services.AddLogging(builder =>
 {
     builder.AddConsole();
-    builder.SetMinimumLevel(LogLevel.Warning);
+    builder.SetMinimumLevel(LogLevel.Information);
 });
 
 services.AddSingleton<Func<AwsSettings, IAmazonS3>>(_ =>
@@ -74,7 +75,8 @@ services.AddSingleton<Func<AwsSettings, IAmazonS3>>(_ =>
         {
             if (string.IsNullOrWhiteSpace(settings.Region))
             {
-                return new AmazonS3Client();
+                throw new InvalidOperationException(
+                $"No AWS profile and no AWS Region was not found. Set AWS:Profile in appsettings.json or pass --profile <name>. Set AWS:Region in appsettings.json.");
             }
 
             var regionEndpoint = Amazon.RegionEndpoint.GetBySystemName(settings.Region);
