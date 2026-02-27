@@ -24,6 +24,14 @@ jobs:
     strategy:
       matrix:
         runtime: [win-x64, linux-x64, osx-x64]
+        variant: [selfcontained, framework]
+        include:
+          - variant: selfcontained
+            selfContained: true
+            includeAllContent: true
+          - variant: framework
+            selfContained: false
+            includeAllContent: false
 
     steps:
 
@@ -46,15 +54,15 @@ jobs:
 
       - run: dotnet restore --verbosity minimal
 
-      - name: Publish single-file executable (${{ matrix.runtime }})
-        run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}
+      - name: Publish single-file executable (${{ matrix.runtime }}-${{ matrix.variant }})
+        run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained ${{ matrix.selfContained }} -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=${{ matrix.includeAllContent }} -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}
 
-      - name: Rename release executable (${{ matrix.runtime }})
+      - name: Rename release executable (${{ matrix.runtime }}-${{ matrix.variant }})
         run: |
           if [ "${{ matrix.runtime }}" = "win-x64" ]; then
-            mv "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console.exe" "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}.exe"
+            mv "./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}/SimpleAWS.S3.Downloader.Console.exe" "./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}-${{ matrix.variant }}.exe"
           else
-            mv "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console" "./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}"
+            mv "./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}/SimpleAWS.S3.Downloader.Console" "./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}-${{ matrix.variant }}"
           fi
 
       - name: Upload release assets
@@ -62,4 +70,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: ./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}*
+          files: ./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}/SimpleAWS.S3.Downloader.Console-${{ matrix.runtime }}-${{ matrix.variant }}*
