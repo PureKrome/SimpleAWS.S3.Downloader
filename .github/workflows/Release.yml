@@ -47,7 +47,7 @@ jobs:
       - run: dotnet restore --verbosity minimal
 
       - name: Publish single-file executable (${{ matrix.runtime }})
-        run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}
+        run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
@@ -55,4 +55,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: SimpleAWS.S3.Downloader.${{ env.RELEASE_VERSION }}
-          files: ./artifacts/${{ matrix.runtime }}/*
+          files: ./artifacts/${{ matrix.runtime }}/SimpleAWS.S3.Downloader.Console*
