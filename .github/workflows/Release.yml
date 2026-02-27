@@ -29,9 +29,15 @@ jobs:
           - variant: selfcontained
             selfContained: true
             includeAllContent: true
+            publishTrimmed: false
+            trimMode: partial
+            publishReadyToRun: true
           - variant: framework
             selfContained: false
             includeAllContent: false
+            publishTrimmed: true
+            trimMode: link
+            publishReadyToRun: false
 
     steps:
 
@@ -55,7 +61,7 @@ jobs:
       - run: dotnet restore --verbosity minimal
 
       - name: Publish single-file executable (${{ matrix.runtime }}-${{ matrix.variant }})
-        run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained ${{ matrix.selfContained }} -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=${{ matrix.includeAllContent }} -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}
+        run: dotnet publish ./src/SimpleAWS.S3.Downloader.Console/SimpleAWS.S3.Downloader.Console.csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained ${{ matrix.selfContained }} -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=${{ matrix.includeAllContent }} -p:PublishTrimmed=${{ matrix.publishTrimmed }} -p:TrimMode=${{ matrix.trimMode }} -p:PublishReadyToRun=${{ matrix.publishReadyToRun }} -p:ContinuousIntegrationBuild=true -p:DebugType=Embedded -p:Version=${{ env.RELEASE_VERSION }} --output ./artifacts/${{ matrix.runtime }}/${{ matrix.variant }}
 
       - name: Rename release executable (${{ matrix.runtime }}-${{ matrix.variant }})
         run: |
