@@ -4,6 +4,15 @@ Interactive console app for downloading objects from an AWS S3 bucket to a local
 
 The core downloading logic lives in the `SimpleAWS.S3.Downloader.Core` library and is consumed by the `SimpleAWS.S3.Downloader.Console` UI.
 
+<p align="center">
+
+    <img alt="App-Pic-1" src="https://github.com/user-attachments/assets/e7cec7e1-c36a-4287-9698-75e13989e578" /><br/><br/>
+
+    <img alt="App-Pic-2" src="https://github.com/user-attachments/assets/bb1292af-4825-4e3c-87e5-bba1065f178f" /><br/><br/>
+
+    <img alt="App-Pic-3" src="https://github.com/user-attachments/assets/dd33101a-1cb8-4fb6-a4a2-1491239146c7" /><br/><br/>
+</p>
+
 ## Tech specs
 
 - .NET: `.NET 10`
